@@ -12,13 +12,13 @@ Runs game loop
 void main() {
 
 	WindowManager windowMan("GAMR2511 Labs", SCR_WIDTH, SCR_HEIGHT, true);  // name, width, height, vSync,
-	Scene scene(windowMan.getWindow(), windowMan.getHandler()); // pass GLFWwindow and Input Handler to scene
+	Scene myScene(windowMan.getWindow(), windowMan.getHandler()); // pass GLFWwindow and Input Handler to scene
 
 	while (!glfwWindowShouldClose(windowMan.getWindow())) {
 
 
 		windowMan.startFrame();
-		scene.update(windowMan.getDeltaTime());
+		myScene.update(windowMan.getDeltaTime());
 		windowMan.endFrame();
 
 	}
