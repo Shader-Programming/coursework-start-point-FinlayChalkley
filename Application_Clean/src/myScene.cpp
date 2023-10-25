@@ -17,27 +17,50 @@ void MyScene::update(float dt)
 void MyScene::makeVAO()
 {
 	glCreateBuffers(1, &VBO);
-	glNamedBufferStorage(VBO, sizeof(float) * 36, vertexData, GL_DYNAMIC_STORAGE_BIT);// size of float array
+	glNamedBufferStorage(VBO, sizeof(float) * vertexData.size(), vertexData.data(), GL_DYNAMIC_STORAGE_BIT);// size of float array
 	
+	glCreateBuffers(1, &EBO); // create element buffer
+	glNamedBufferStorage(EBO, sizeof(unsigned int) * cubeIndices.size(), cubeIndices.data(), GL_DYNAMIC_STORAGE_BIT);
+
 
 	glCreateVertexArrays(1, &VAO);
-	glVertexArrayVertexBuffer(VAO, 0, VBO, 0, sizeof(float) * 6); // size of stride information
+	glVertexArrayVertexBuffer(VAO, 0, VBO, 0, sizeof(float) * 3); // size of stride information
+	glVertexArrayElementBuffer(VAO, EBO); // add EBO to VAO
 
 	glEnableVertexArrayAttrib(VAO, 0);
-	glEnableVertexArrayAttrib(VAO, 1);
+	//glEnableVertexArrayAttrib(VAO, 1);
 	
 
 	glVertexArrayAttribFormat(VAO, 0, 3, GL_FLOAT, GL_FALSE, 0); 
-	glVertexArrayAttribFormat(VAO, 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
+	//glVertexArrayAttribFormat(VAO, 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
 
 	glVertexArrayAttribBinding(VAO, 0, 0);
-	glVertexArrayAttribBinding(VAO, 1, 0);
+	//glVertexArrayAttribBinding(VAO, 1, 0);
 
 }
 
 void MyScene::render()
 {
+	m_model = glm::mat4(1.0f);
+	//update view and projection matrices
+	m_prjection = m_camera->getProjectionMatrix();
+	m_view = m_camera->getViewMatrix();
 	m_myShader->use();
+	//set uniforms
+	m_myShader->setMat4("View", m_view);
+	m_myShader->setMat4("Projection", m_prjection);
+	m_myShader->setMat4("Model", m_model);
+
 	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
+	//glDrawArrays(GL_TRIANGLES, 0, 6);
+
+
+	//draw another cube
+	//update the model matrix
+	m_model = glm::translate(m_model, glm::vec3(5.0, 0.0, 0.0));
+	// pass updated uniform to shader
+	m_myShader->setMat4("model", m_model);
+	// another draw call
+	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
 }
