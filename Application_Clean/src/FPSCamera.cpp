@@ -36,7 +36,7 @@ void FirstPersonCamera::update(float dt)
 {
 	float vel = m_speed * dt;
 	bool mouseMove = m_handler->mouseHasMoved();
-
+	/*
 	if (m_handler->keyHasBeenPressed()) {
 		if (m_handler->isKeyPressed(GLFW_KEY_W)) {
 			m_position += m_front * vel;
@@ -51,8 +51,9 @@ void FirstPersonCamera::update(float dt)
 			m_position += m_right * vel;
 		}
 	}
+	*/
 
-	look(m_handler->getMouseDeltaX(), m_handler->getMouseDeltaY());
+	//look(m_handler->getMouseDeltaX(), m_handler->getMouseDeltaY());
 	zoom(m_handler->getMouseScrollY());
 
 	m_handler->endFrame();  // reset delta values

@@ -45,22 +45,45 @@ void MyScene::render()
 	//update view and projection matrices
 	m_prjection = m_camera->getProjectionMatrix();
 	m_view = m_camera->getViewMatrix();
+	
 	m_myShader->use();
 	//set uniforms
 	m_myShader->setMat4("View", m_view);
 	m_myShader->setMat4("Projection", m_prjection);
 	m_myShader->setMat4("Model", m_model);
-
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
 	//glDrawArrays(GL_TRIANGLES, 0, 6);
 
-
+	// moving the cube
+	if (m_handler->keyHasBeenPressed()) {
+		if (m_handler->isKeyPressed(GLFW_KEY_W)) {
+			m_model = glm::translate(m_model, glm::vec3(0.0, 2.0, 0.0));
+		}
+		if (m_handler->isKeyPressed(GLFW_KEY_S)) {
+			m_model = glm::translate(m_model, glm::vec3(0.0, -2.0, 0.0));
+		}
+		if (m_handler->isKeyPressed(GLFW_KEY_A)) {
+			m_model = glm::translate(m_model, glm::vec3(-2.0, 0.0, 0.0));
+		}
+		if (m_handler->isKeyPressed(GLFW_KEY_D)) {
+			m_model = glm::translate(m_model, glm::vec3(2.0, 0.0, 0.0));
+		}
+		if (m_handler->isKeyPressed(GLFW_KEY_X)) {
+			m_model = glm::rotate(m_model, (float)(glfwGetTime() * 0.5), glm::vec3(1.0, 0.0, 0.0));
+		}
+	}
+	m_myShader->setMat4("Model", m_model);
+	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
+	
 	//draw another cube
 	//update the model matrix
 	m_model = glm::translate(m_model, glm::vec3(5.0, 0.0, 0.0));
+	//rotate
+	m_model = glm::rotate(m_model, (float)(glfwGetTime() * 0.5), glm::vec3(1.0, 0.0, 0.0));
 	// pass updated uniform to shader
-	m_myShader->setMat4("model", m_model);
+	m_myShader->setMat4("Model", m_model);
 	// another draw call
 	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
+	
 }
