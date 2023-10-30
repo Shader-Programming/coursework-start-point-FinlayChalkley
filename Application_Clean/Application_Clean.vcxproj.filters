@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\lights">
+      <UniqueIdentifier>{698bd65b-4345-423d-b72d-5c3ff7e39684}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\lights">
+      <UniqueIdentifier>{423c2ba5-c196-456b-86f6-fe21b82c3fa9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EntryPoint.cpp">
@@ -35,6 +41,9 @@
     </ClCompile>
     <ClCompile Include="src\myScene.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lights\DirectionalLight.cpp">
+      <Filter>Source Files\lights</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +73,12 @@
     </ClInclude>
     <ClInclude Include="include\myScene.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\lights\DirectionalLight.h">
+      <Filter>Header Files\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\lights\light.h">
+      <Filter>Header Files\lights</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

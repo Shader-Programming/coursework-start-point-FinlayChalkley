@@ -5,6 +5,8 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_camera = new FirstPersonCamera();
 	m_camera->attachHandler(m_window, m_handler);
 	m_myShader = new Shader("..\\Shaders\\vertexShader.glsl", "..\\shaders\\fragShader.glsl");
+	//m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
+	//m_directionalLight->setLightUniform(m_myShader);
 	makeVAO();
 }
 
@@ -24,18 +26,18 @@ void MyScene::makeVAO()
 
 
 	glCreateVertexArrays(1, &VAO);
-	glVertexArrayVertexBuffer(VAO, 0, VBO, 0, sizeof(float) * 3); // size of stride information
+	glVertexArrayVertexBuffer(VAO, 0, VBO, 0, sizeof(float) * 6); // size of stride information
 	glVertexArrayElementBuffer(VAO, EBO); // add EBO to VAO
 
 	glEnableVertexArrayAttrib(VAO, 0);
-	//glEnableVertexArrayAttrib(VAO, 1);
+	glEnableVertexArrayAttrib(VAO, 1);
 	
 
 	glVertexArrayAttribFormat(VAO, 0, 3, GL_FLOAT, GL_FALSE, 0); 
-	//glVertexArrayAttribFormat(VAO, 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
+	glVertexArrayAttribFormat(VAO, 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
 
 	glVertexArrayAttribBinding(VAO, 0, 0);
-	//glVertexArrayAttribBinding(VAO, 1, 0);
+	glVertexArrayAttribBinding(VAO, 1, 0);
 
 }
 
@@ -50,7 +52,17 @@ void MyScene::render()
 	//set uniforms
 	m_myShader->setMat4("View", m_view);
 	m_myShader->setMat4("Projection", m_prjection);
+	m_myShader->setVec3("viewPos", m_camera->getPosition());
+
+	m_myShader->setVec3("lightColour", glm::vec3(1.0f));
+	m_myShader->setVec3("lightDirection", glm::vec3(-1.0f, -1.0f, 0.0f));
+	m_myShader->setFloat("ambientFactor", 0.5);
+
 	m_myShader->setMat4("Model", m_model);
+	m_myShader->setVec3("cubeColour", glm::vec3(0.1, 0.2, 0.3));
+	m_myShader->setFloat("shine", 64);
+	m_myShader->setFloat("specStrangth", 0.9);
+
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
 	//glDrawArrays(GL_TRIANGLES, 0, 6);
