@@ -11,10 +11,11 @@ out vec3 normal;
 out vec3 posInWS; // pass position in world to frag shader
 void main(){
 
-    normal = aNormal;
+    normal = (Model * vec4(aNormal, 0.0)).xyz;
 
-    vec4 worldSpace = Model * vec4(apos, 1.0);
-    posInWS - worldspace.xyz;
+    normal = mat3(transpose(inverse(Model))) * aNormal;
+    vec4 worldSpace = Model * vec4(aPos, 1.0);
+    posInWS - worldSpace.xyz;
     gl_Position = Projection * View * worldSpace ;
 
 }

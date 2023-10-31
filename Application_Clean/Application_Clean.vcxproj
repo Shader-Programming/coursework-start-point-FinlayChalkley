@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cube.cpp" />
     <ClCompile Include="src\lights\DirectionalLight.cpp" />
     <ClCompile Include="src\EntryPoint.cpp" />
     <ClCompile Include="src\FPSCamera.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="src\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cube.h" />
     <ClInclude Include="include\lights\DirectionalLight.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\FPSCamera.h" />

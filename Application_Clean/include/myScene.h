@@ -1,7 +1,7 @@
 #pragma once
 #include "Scene.h"
 #include "Shader.h"
-//#include "lights/DirectionalLight.h"
+#include "lights/DirectionalLight.h"
 
 
 class MyScene : public Scene
@@ -64,7 +64,7 @@ private:
 	void makeVAO();
 	void render();
 	Shader* m_myShader;
-	//DirectionalLight* m_directionalLight;
+	DirectionalLight* m_directionalLight;
 
 };
 

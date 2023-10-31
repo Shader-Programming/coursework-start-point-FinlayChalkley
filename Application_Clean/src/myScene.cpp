@@ -5,8 +5,8 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_camera = new FirstPersonCamera();
 	m_camera->attachHandler(m_window, m_handler);
 	m_myShader = new Shader("..\\Shaders\\vertexShader.glsl", "..\\shaders\\fragShader.glsl");
-	//m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
-	//m_directionalLight->setLightUniform(m_myShader);
+	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
+	m_directionalLight->setLightUniforms(m_myShader);
 	makeVAO();
 }
 
@@ -53,10 +53,6 @@ void MyScene::render()
 	m_myShader->setMat4("View", m_view);
 	m_myShader->setMat4("Projection", m_prjection);
 	m_myShader->setVec3("viewPos", m_camera->getPosition());
-
-	m_myShader->setVec3("lightColour", glm::vec3(1.0f));
-	m_myShader->setVec3("lightDirection", glm::vec3(-1.0f, -1.0f, 0.0f));
-	m_myShader->setFloat("ambientFactor", 0.5);
 
 	m_myShader->setMat4("Model", m_model);
 	m_myShader->setVec3("cubeColour", glm::vec3(0.1, 0.2, 0.3));
