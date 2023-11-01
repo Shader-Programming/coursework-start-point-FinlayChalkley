@@ -45,7 +45,7 @@
     <ClCompile Include="src\lights\DirectionalLight.cpp">
       <Filter>Source Files\lights</Filter>
     </ClCompile>
-    <ClCompile Include="cube.cpp">
+    <ClCompile Include="src\cube.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +83,7 @@
     <ClInclude Include="include\lights\light.h">
       <Filter>Header Files\lights</Filter>
     </ClInclude>
-    <ClInclude Include="cube.h">
+    <ClInclude Include="include\cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,7 +7,10 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_myShader = new Shader("..\\Shaders\\vertexShader.glsl", "..\\shaders\\fragShader.glsl");
 	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
 	m_directionalLight->setLightUniforms(m_myShader);
-	makeVAO();
+	
+	m_cube = new Cube(glm::vec3(0.1, 0.2, 0.3), 64, 16);
+	m_cube->setCubeMaterialValues(m_myShader);
+
 }
 
 void MyScene::update(float dt)
@@ -15,7 +18,7 @@ void MyScene::update(float dt)
 	m_camera->update(dt);
 	render();
 }
-
+/*
 void MyScene::makeVAO()
 {
 	glCreateBuffers(1, &VBO);
@@ -40,30 +43,20 @@ void MyScene::makeVAO()
 	glVertexArrayAttribBinding(VAO, 1, 0);
 
 }
+*/
+
 
 void MyScene::render()
 {
-	m_model = glm::mat4(1.0f);
-	//update view and projection matrices
-	m_prjection = m_camera->getProjectionMatrix();
-	m_view = m_camera->getViewMatrix();
-	
+
 	m_myShader->use();
 	//set uniforms
-	m_myShader->setMat4("View", m_view);
-	m_myShader->setMat4("Projection", m_prjection);
+	m_myShader->setMat4("View", m_camera->getViewMatrix());
+	m_myShader->setMat4("Projection", m_camera->getProjectionMatrix());
 	m_myShader->setVec3("viewPos", m_camera->getPosition());
 
-	m_myShader->setMat4("Model", m_model);
-	m_myShader->setVec3("cubeColour", glm::vec3(0.1, 0.2, 0.3));
-	m_myShader->setFloat("shine", 64);
-	m_myShader->setFloat("specStrangth", 0.9);
-
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
-	//glDrawArrays(GL_TRIANGLES, 0, 6);
-
 	// moving the cube
+	/*
 	if (m_handler->keyHasBeenPressed()) {
 		if (m_handler->isKeyPressed(GLFW_KEY_W)) {
 			m_model = glm::translate(m_model, glm::vec3(0.0, 2.0, 0.0));
@@ -81,17 +74,8 @@ void MyScene::render()
 			m_model = glm::rotate(m_model, (float)(glfwGetTime() * 0.5), glm::vec3(1.0, 0.0, 0.0));
 		}
 	}
-	m_myShader->setMat4("Model", m_model);
-	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
-	
-	//draw another cube
-	//update the model matrix
-	m_model = glm::translate(m_model, glm::vec3(5.0, 0.0, 0.0));
-	//rotate
-	m_model = glm::rotate(m_model, (float)(glfwGetTime() * 0.5), glm::vec3(1.0, 0.0, 0.0));
-	// pass updated uniform to shader
-	m_myShader->setMat4("Model", m_model);
-	// another draw call
-	glDrawElements(GL_TRIANGLES, cubeIndices.size(), GL_UNSIGNED_INT, 0);
-	
+	*/
+	glBindVertexArray(m_cube->getVAO());
+	m_cube->setTransform(m_myShader);
+	glDrawElements(GL_TRIANGLES, m_cube->getIndecesCount(), GL_UNSIGNED_INT, 0);
 }

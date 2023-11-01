@@ -14,7 +14,7 @@ public:
 	~Cube();
 	void setCubeMaterialValues(Shader* shader); // set the material values in the shader
 
-	void setTransform(Shader* shader) { shader->setMat4("<odel", m_transform); }
+	void setTransform(Shader* shader) { shader->setMat4("Model", m_transform); }
 	void resetTransform() { m_transform = glm::mat4(1.0); } // reset matrix
 
 	unsigned int& getVAO() { return m_VAO; }
@@ -34,7 +34,7 @@ private:
 	float m_specularStrength;
 	glm::vec3 m_colour;
 	// geometry data
-	std::vector<float> vertData = 
+	std::vector<float> vertexData = 
 	{//  xyz, normal
 		// back
 		-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
