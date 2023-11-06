@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\lights\PointLight.cpp" />
     <ClCompile Include="src\cube.cpp" />
     <ClCompile Include="src\lights\DirectionalLight.cpp" />
     <ClCompile Include="src\EntryPoint.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="src\InputHandler.cpp" />
     <ClCompile Include="src\myScene.cpp" />
     <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\lights\SpotLight.cpp" />
     <ClCompile Include="src\WindowManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,8 +168,10 @@
     <ClInclude Include="include\Properties.h" />
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\lights\SpotLight.h" />
     <ClInclude Include="include\WindowManager.h" />
     <ClInclude Include="include\lights\light.h" />
+    <ClInclude Include="include\lights\PointLight.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

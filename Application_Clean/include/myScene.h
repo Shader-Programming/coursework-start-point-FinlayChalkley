@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "Shader.h"
 #include "lights/DirectionalLight.h"
+#include "lights/PointLight.h"
+#include "lights/SpotLight.h"
 #include "cube.h"
 
 
@@ -18,6 +20,8 @@ private:
 	Shader* m_myShader;
 	DirectionalLight* m_directionalLight;
 	Cube* m_cube;
+	PointLight* m_pointLight;
+	SpotLight* m_spotLight;
 
 	void render();
 };
