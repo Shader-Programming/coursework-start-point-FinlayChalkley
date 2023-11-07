@@ -4,10 +4,6 @@ uniform vec3 viewPos;
 uniform vec3 cubeColour;
 uniform float shine;
 uniform float specStrength;
-//point light uniforms
-uniform vec3 plightPosition;
-uniform vec3 plightcolour;
-uniform vec3 pAttentuation;
 //directional light uniforms
 uniform vec3 lightColour;
 uniform vec3 lightDirection;
@@ -29,12 +25,23 @@ struct PointLight {
     vec3 constants;
 };
 
-#define numPL 2
-uniform PointLight[numPL];
+#define numPL 50
+uniform PointLight pointArray[numPL];
 
 
 vec3 n = normalize(normal);
 vec3 viewDir = normalize(viewPos - posInWS); // posInWS comes from vertex shader
+vec3 getDirectionalLight();
+vec3 getPointLight();
+
+void main(){
+    vec3 result = getDirectionalLight();
+    result += getPointLight();
+    //result += getSpotLight();
+    //result = aces(result);
+    FragColor = vec4(result, 1.0);
+
+}
 
 vec3 getDirectionalLight() {
     // ambient
@@ -58,25 +65,25 @@ vec3 getDirectionalLight() {
 }
 vec3 getPointLight() {
     //attn
-    float distance = length(plightPosition - posInWS);
-    float attn = 1.0 / (pAttentuation.x + (pAttentuation.y*distance) + (pAttentuation.z*(distance*distance)));
+    float distance = length(pointArray[0].position - posInWS);
+    float attn = 1.0 / (pointArray[0].constants.x + (pointArray[0].constants.y*distance) + (pointArray[0].constants.z*(distance*distance)));
 
-    vec3 lightDir = normalize((plightPosition - posInWS));
+    vec3 lightDir = normalize((pointArray[0].position - posInWS));
 
     //diffuse
-    float diffuseFactor = dot(n, -plightPosition);
+    float diffuseFactor = dot(n, -lightDir);
     diffuseFactor = max(diffuseFactor, 0.0f);
-    vec3 diffuse = cubeColour * plightcolour * diffuseFactor;
-    diffuse = diffuse * attn;
+    vec3 diffuse = cubeColour * pointArray[0].colour * diffuseFactor;
+    
     //specular
     vec3 viewDir = normalize(viewPos - posInWS); // posInWS comes from vertex shader
-    vec3 H = normalize(-plightPosition + viewDir);
+    vec3 H = normalize(-pointArray[0].position + viewDir);
     float specLevel = dot(n, H);
     specLevel = max(specLevel, 0.0); //make sure value is > 0
     specLevel = pow(specLevel, shine); // exponent, float variable
-    vec3 specular = plightcolour * specLevel * specStrength;
-    specular = specular * attn;
-
+    vec3 specular = pointArray[0].colour * specLevel * specStrength;
+    //specular = specular * attn;
+    //diffuse = diffuse * attn;
 
     return diffuse + specular;
 }
@@ -102,11 +109,14 @@ vec3 getSpotLight() {
 
     return diffuse + specular;
 }
-
-
-void main(){
-    vec3 result = getDirectionalLight();
-    result += getPointLight();
-    FragColor = vec4(result, 1.0);
+/*
+vec3 aces(vec3 x) {
+    const float a = 2.51;
+    const float b = 0.03;
+    const float c = 2.43;
+    const float d = 0.59;
+    const float e = 0.14;
+    return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
 
 }
+*/

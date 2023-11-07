@@ -1,4 +1,8 @@
 #include "myScene.h"
+#include <ctime> 
+#include <iostream> 
+#include <random> 
+using namespace std;
 
 MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) 
 {
@@ -7,6 +11,12 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_myShader = new Shader("..\\Shaders\\vertexShader.glsl", "..\\shaders\\fragShader.glsl");
 	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
 	m_directionalLight->setLightUniforms(m_myShader);
+	for (int i = 0; i <= 50; i++) {
+		mt19937 mt(time(nullptr));
+		m_pointLight = new PointLight(glm::vec3(mt(), mt(), mt()), glm::vec3(mt(), mt(), mt()), glm::vec3(mt(), mt(), mt()));
+		m_pointLight->setLightUniforms(m_myShader);
+	}
+	//m_spotLight = new SpotLight(glm::vec3(0.5,1.0,0.0), glm::vec3(0.0,7.0,0.0), glm::vec3(1.0, 0.027,0.0028), glm::vec3(0.0,-1.0,0.0), glm::vec2(glm::cos(glm::radians(12.5))))
 	
 	m_cube = new Cube(glm::vec3(0.1, 0.2, 0.3), 64, 16);
 	m_cube->setCubeMaterialValues(m_myShader);

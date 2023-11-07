@@ -1,4 +1,4 @@
-#include "SpotLight.h"
+#include "lights/SpotLight.h"
 
 SpotLight::SpotLight(glm::vec3 colour, glm::vec3 position, glm::vec3 constants, glm::vec3 dir, glm::vec2 radii):
 	light(colour),

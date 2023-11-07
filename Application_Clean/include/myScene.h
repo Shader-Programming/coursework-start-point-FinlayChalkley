@@ -21,7 +21,7 @@ private:
 	DirectionalLight* m_directionalLight;
 	Cube* m_cube;
 	PointLight* m_pointLight;
-	SpotLight* m_spotLight;
+	//SpotLight* m_spotLight;
 
 	void render();
 };
