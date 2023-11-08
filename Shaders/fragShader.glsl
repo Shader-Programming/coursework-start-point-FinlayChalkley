@@ -35,8 +35,8 @@ vec3 getDirectionalLight();
 vec3 getPointLight();
 
 void main(){
-    vec3 result = getDirectionalLight();
-    result += getPointLight();
+    //vec3 result = getDirectionalLight();
+    vec3 result = getPointLight();
     //result += getSpotLight();
     //result = aces(result);
     FragColor = vec4(result, 1.0);
@@ -65,19 +65,19 @@ vec3 getDirectionalLight() {
 }
 vec3 getPointLight() {
     //attn
-    float distance = length(pointArray[0].position - posInWS);
-    float attn = 1.0 / (pointArray[0].constants.x + (pointArray[0].constants.y*distance) + (pointArray[0].constants.z*(distance*distance)));
+    float distance = length(pointArray[i].position - posInWS);
+    float attn = 1.0 / (pointArray[i].constants.x + (pointArray[i].constants.y*distance) + (pointArray[0].constants.z*(distance*distance)));
 
-    vec3 lightDir = normalize((pointArray[0].position - posInWS));
+    vec3 lightDir = normalize((pointArray[i].position - posInWS));
 
     //diffuse
     float diffuseFactor = dot(n, -lightDir);
     diffuseFactor = max(diffuseFactor, 0.0f);
-    vec3 diffuse = cubeColour * pointArray[0].colour * diffuseFactor;
+    vec3 diffuse = cubeColour * pointArray[i].colour * diffuseFactor;
     
     //specular
     vec3 viewDir = normalize(viewPos - posInWS); // posInWS comes from vertex shader
-    vec3 H = normalize(-pointArray[0].position + viewDir);
+    vec3 H = normalize(-pointArray[i].position + viewDir);
     float specLevel = dot(n, H);
     specLevel = max(specLevel, 0.0); //make sure value is > 0
     specLevel = pow(specLevel, shine); // exponent, float variable

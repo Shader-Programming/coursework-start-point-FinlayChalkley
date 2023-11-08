@@ -14,6 +14,7 @@ public:
 	MyScene(GLFWwindow* window, InputHandler* H);
 	~MyScene() {};
 	void update(float dt) override;
+	glm::vec3 rand(glm::vec3 lower, glm::vec3 upper);
 
 private:
 		

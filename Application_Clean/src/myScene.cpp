@@ -4,6 +4,7 @@
 #include <random> 
 using namespace std;
 
+
 MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) 
 {
 	m_camera = new FirstPersonCamera();
@@ -12,9 +13,9 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
 	m_directionalLight->setLightUniforms(m_myShader);
 	for (int i = 0; i <= 50; i++) {
-		mt19937 mt(time(nullptr));
-		m_pointLight = new PointLight(glm::vec3(mt(), mt(), mt()), glm::vec3(mt(), mt(), mt()), glm::vec3(mt(), mt(), mt()));
-		m_pointLight->setLightUniforms(m_myShader);
+		
+		m_pointLight = new PointLight(rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-1.0, 1.0, 1.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-5.0, -5.0, - 5.0), glm::vec3(5.0,5.0,5.0)));
+		m_pointLight->setLightUniforms(m_myShader, i);
 	}
 	//m_spotLight = new SpotLight(glm::vec3(0.5,1.0,0.0), glm::vec3(0.0,7.0,0.0), glm::vec3(1.0, 0.027,0.0028), glm::vec3(0.0,-1.0,0.0), glm::vec2(glm::cos(glm::radians(12.5))))
 	
@@ -23,10 +24,23 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 
 }
 
+
 void MyScene::update(float dt)
 {
 	m_camera->update(dt);
 	render();
+}
+glm::vec3 MyScene::rand(glm::vec3 lower, glm::vec3 upper)
+{
+	std::random_device rd;
+	std::mt19937 mt(rd());
+
+
+	std::uniform_real_distribution<float>distribx(lower.x, upper.x);
+	std::uniform_real_distribution<float>distriby(lower.y, upper.y);
+	std::uniform_real_distribution<float>distribz(lower.z, upper.z);
+	glm::vec3 randVec = glm::vec3(distribx(mt), distriby(mt), distribz(mt));
+	return randVec;
 }
 /*
 void MyScene::makeVAO()
