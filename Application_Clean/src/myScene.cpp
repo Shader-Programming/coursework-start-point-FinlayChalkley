@@ -12,18 +12,27 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_myShader = new Shader("..\\Shaders\\vertexShader.glsl", "..\\shaders\\fragShader.glsl");
 	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
 	m_directionalLight->setLightUniforms(m_myShader);
+	/*
 	for (int i = 0; i <= 50; i++) {
-		
-		m_pointLight = new PointLight(rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-1.0, 1.0, 1.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-5.0, -5.0, - 5.0), glm::vec3(5.0,5.0,5.0)));
-		m_pointLight->setLightUniforms(m_myShader, i);
+		int myi = getPointi(i);
 	}
-	//m_spotLight = new SpotLight(glm::vec3(0.5,1.0,0.0), glm::vec3(0.0,7.0,0.0), glm::vec3(1.0, 0.027,0.0028), glm::vec3(0.0,-1.0,0.0), glm::vec2(glm::cos(glm::radians(12.5))))
-	
+	*/
+	m_pointLight = new PointLight(rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-1.0, 1.0, 1.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-5.0, -5.0, - 5.0), glm::vec3(5.0,5.0,5.0)));
+	m_pointLight->setLightUniforms(m_myShader);
+
+	m_spotLight = new SpotLight(glm::vec3(0.5, 1.0, 0.0), glm::vec3(0.0, 7.0, 0.0), glm::vec3(1.0, 0.027, 0.0028), glm::vec3(0.0, -1.0, 0.0), glm::vec2((glm::cos(glm::radians(12.5f))), glm::cos(glm::radians(17.5f))));
+	m_spotLight->setLightUniforms(m_myShader);
+
 	m_cube = new Cube(glm::vec3(0.1, 0.2, 0.3), 64, 16);
 	m_cube->setCubeMaterialValues(m_myShader);
 
+	m_walls = new Plane(glm::vec3(1.0, 1.0, 1.0), 64, 16);
+	m_walls->setPlaneMaterialValues(m_myShader);
 }
 
+int MyScene::getPointi(int i) {
+	return i;
+}
 
 void MyScene::update(float dt)
 {

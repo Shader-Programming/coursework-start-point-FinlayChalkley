@@ -5,6 +5,7 @@
 #include "lights/PointLight.h"
 #include "lights/SpotLight.h"
 #include "cube.h"
+#include "walls.h"
 
 
 
@@ -15,6 +16,7 @@ public:
 	~MyScene() {};
 	void update(float dt) override;
 	glm::vec3 rand(glm::vec3 lower, glm::vec3 upper);
+	int getPointi(int i);
 
 private:
 		
@@ -22,7 +24,8 @@ private:
 	DirectionalLight* m_directionalLight;
 	Cube* m_cube;
 	PointLight* m_pointLight;
-	//SpotLight* m_spotLight;
+	SpotLight* m_spotLight;
+	Plane* m_walls;
 
 	void render();
 };

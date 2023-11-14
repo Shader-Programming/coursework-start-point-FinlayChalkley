@@ -156,6 +156,7 @@
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\lights\SpotLight.cpp" />
     <ClCompile Include="src\WindowManager.cpp" />
+    <ClCompile Include="src\walls.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cube.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="include\WindowManager.h" />
     <ClInclude Include="include\lights\light.h" />
     <ClInclude Include="include\lights\PointLight.h" />
+    <ClInclude Include="include\walls.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
