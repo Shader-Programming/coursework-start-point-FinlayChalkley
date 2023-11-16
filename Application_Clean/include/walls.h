@@ -15,7 +15,7 @@ public:
 	void setTransform(Shader* shader) { shader->setMat4("Model", m_transform); }
 	void resetTransform() { m_transform = glm::mat4(1.0); }
 
-	unsigned int getVAO() { return m_VAO; }
+	unsigned int getVAO() { return m_VAO2; }
 	glm::mat4& getModelMatrix() { return m_transform; }
 	unsigned int getIndicesCount() { return floorIndices.size(); }
 
@@ -24,7 +24,7 @@ private:
 	const float floorSize = 7.0f;
 	void makeVAO();
 
-	unsigned int m_VAO;
+	unsigned int m_VAO2;
 	glm::mat4 m_transform;
 	float m_shine;
 	float m_specularStrength;

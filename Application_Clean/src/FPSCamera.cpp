@@ -53,7 +53,7 @@ void FirstPersonCamera::update(float dt)
 	}
 	
 
-	//look(m_handler->getMouseDeltaX(), m_handler->getMouseDeltaY());
+	look(m_handler->getMouseDeltaX(), m_handler->getMouseDeltaY());
 	zoom(m_handler->getMouseScrollY());
 
 	m_handler->endFrame();  // reset delta values

@@ -12,27 +12,25 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_myShader = new Shader("..\\Shaders\\vertexShader.glsl", "..\\shaders\\fragShader.glsl");
 	m_directionalLight = new DirectionalLight(glm::vec3(1.0), glm::vec3(-1.0f, -1.0f, 0.0f));
 	m_directionalLight->setLightUniforms(m_myShader);
-	/*
-	for (int i = 0; i <= 50; i++) {
-		int myi = getPointi(i);
+	
+	for (int i = 0; i < 50; i++) {
+		m_pointLight = new PointLight(rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-5.0, -5.0, - 5.0), glm::vec3(5.0,5.0,5.0)));
+		m_pointLight->setLightUniforms(m_myShader, i);
+		cout << i << endl;
 	}
-	*/
-	m_pointLight = new PointLight(rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-1.0, 1.0, 1.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-5.0, -5.0, - 5.0), glm::vec3(5.0,5.0,5.0)));
-	m_pointLight->setLightUniforms(m_myShader);
+	
 
-	m_spotLight = new SpotLight(glm::vec3(0.5, 1.0, 0.0), glm::vec3(0.0, 7.0, 0.0), glm::vec3(1.0, 0.027, 0.0028), glm::vec3(0.0, -1.0, 0.0), glm::vec2((glm::cos(glm::radians(12.5f))), glm::cos(glm::radians(17.5f))));
+	m_spotLight = new SpotLight(glm::vec3(0.5, 1.0, 1.0), glm::vec3(0.0, 7.0, 0.0), glm::vec3(1.0, 0.027, 0.0028), glm::vec3(0.0, -1.0, 0.0), glm::vec2((glm::cos(glm::radians(12.5f))), glm::cos(glm::radians(17.5f))));
 	m_spotLight->setLightUniforms(m_myShader);
 
 	m_cube = new Cube(glm::vec3(0.1, 0.2, 0.3), 64, 16);
 	m_cube->setCubeMaterialValues(m_myShader);
-
+	/*
 	m_walls = new Plane(glm::vec3(1.0, 1.0, 1.0), 64, 16);
 	m_walls->setPlaneMaterialValues(m_myShader);
+	*/
 }
 
-int MyScene::getPointi(int i) {
-	return i;
-}
 
 void MyScene::update(float dt)
 {
@@ -51,32 +49,7 @@ glm::vec3 MyScene::rand(glm::vec3 lower, glm::vec3 upper)
 	glm::vec3 randVec = glm::vec3(distribx(mt), distriby(mt), distribz(mt));
 	return randVec;
 }
-/*
-void MyScene::makeVAO()
-{
-	glCreateBuffers(1, &VBO);
-	glNamedBufferStorage(VBO, sizeof(float) * vertexData.size(), vertexData.data(), GL_DYNAMIC_STORAGE_BIT);// size of float array
-	
-	glCreateBuffers(1, &EBO); // create element buffer
-	glNamedBufferStorage(EBO, sizeof(unsigned int) * cubeIndices.size(), cubeIndices.data(), GL_DYNAMIC_STORAGE_BIT);
 
-
-	glCreateVertexArrays(1, &VAO);
-	glVertexArrayVertexBuffer(VAO, 0, VBO, 0, sizeof(float) * 6); // size of stride information
-	glVertexArrayElementBuffer(VAO, EBO); // add EBO to VAO
-
-	glEnableVertexArrayAttrib(VAO, 0);
-	glEnableVertexArrayAttrib(VAO, 1);
-	
-
-	glVertexArrayAttribFormat(VAO, 0, 3, GL_FLOAT, GL_FALSE, 0); 
-	glVertexArrayAttribFormat(VAO, 1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float));
-
-	glVertexArrayAttribBinding(VAO, 0, 0);
-	glVertexArrayAttribBinding(VAO, 1, 0);
-
-}
-*/
 
 
 void MyScene::render()
@@ -108,7 +81,20 @@ void MyScene::render()
 		}
 	}
 	*/
+	
 	glBindVertexArray(m_cube->getVAO());
 	m_cube->setTransform(m_myShader);
 	glDrawElements(GL_TRIANGLES, m_cube->getIndecesCount(), GL_UNSIGNED_INT, 0);
+	//second cube
+	m_cube->translate(glm::vec3(5.0, 0.0, 0.0));
+	m_cube->rotate((float)(glfwGetTime() * 0.5), glm::vec3(1.0, 0.0, 0.0));
+	m_cube->setTransform(m_myShader);
+	glDrawElements(GL_TRIANGLES, m_cube->getIndecesCount(), GL_UNSIGNED_INT, 0);
+	m_cube->resetTransform();
+	/*
+	glBindVertexArray(m_walls->getVAO());
+	m_walls->setTransform(m_myShader);
+	glDrawElements(GL_TRIANGLES, m_walls->getIndicesCount(), GL_UNSIGNED_INT, 0);
+	*/
+	
 }
