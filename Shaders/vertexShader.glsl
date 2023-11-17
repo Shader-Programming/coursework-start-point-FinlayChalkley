@@ -10,7 +10,7 @@ uniform mat4 Projection;
 
 out vec3 normal;
 out vec3 posInWS; // pass position in world to frag shader
-out vec2 texture;
+out vec2 uv;
 void main(){ 
 
     normal = (Model * vec4(aNormal, 0.0)).xyz;
@@ -20,6 +20,6 @@ void main(){
     posInWS - worldSpace.xyz;
     gl_Position = Projection * View * worldSpace ;
 
-    texture = aTexture;
+    uv = aTexture;
 
 }

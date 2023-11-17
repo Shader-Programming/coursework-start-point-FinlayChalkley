@@ -14,8 +14,8 @@ uniform vec3 sAttentuation;
 uniform vec3 sDirection;
 uniform vec2 sRadii;
 // material properties 
-uniform sampler2d diffuseMap;
-uniform sampler2d specularMap;
+uniform sampler2D diffuseMap;
+uniform sampler2D specularMap;
 uniform float shine;
 
 
@@ -24,7 +24,7 @@ int i = 0;
 out vec4 FragColor;
 in vec3 normal;
 in vec3 posInWS;
-in vec2 texture;
+in vec2 uv;
 
 struct PointLight {
     vec3 colour;
@@ -62,7 +62,7 @@ vec3 getDirectionalLight() {
 
     //diffuse
     float diffuseFactor = dot(n, -lightDirection);
-    diffuseFactor = max(diffuseFactor, 1.0f);
+    diffuseFactor = max(diffuseFactor, 0.0f);
     vec3 diffuse = objCol * lightColour * diffuseFactor;
 
     //blinn phong specular
@@ -82,23 +82,23 @@ vec3 getPointLight() {
     float specStrength = texture(specularMap, uv).r;
 
 
-    float distance = length(pointArray[i].position - posInWS);
-    float attn = 1.0 / (pointArray[i].constants.x + (pointArray[i].constants.y*distance) + (pointArray[i].constants.z*(distance*distance)));
+    float distance = length(pointArray[0].position - posInWS);
+    float attn = 1.0 / (pointArray[0].constants.x + (pointArray[0].constants.y*distance) + (pointArray[0].constants.z*(distance*distance)));
 
-    vec3 lightDir = normalize((pointArray[i].position - posInWS));
+    vec3 lightDir = normalize((pointArray[0].position - posInWS));
 
     //diffuse
     float diffuseFactor = dot(n, -lightDir);
     diffuseFactor = max(diffuseFactor, 1.0f);
-    vec3 diffuse = objCol * pointArray[i].colour * diffuseFactor;
+    vec3 diffuse = objCol * pointArray[0].colour * diffuseFactor;
     
     //specular
     vec3 viewDir = normalize(viewPos - posInWS); // posInWS comes from vertex shader
-    vec3 H = normalize(-pointArray[i].position + viewDir);
+    vec3 H = normalize(-pointArray[0].position + viewDir);
     float specLevel = dot(n, H);
     specLevel = max(specLevel, 0.0); //make sure value is > 0
     specLevel = pow(specLevel, shine); // exponent, float variable
-    vec3 specular = pointArray[i].colour * specLevel * specStrength;
+    vec3 specular = pointArray[0].colour * specLevel * specStrength;
     //specular = specular * attn;
     //diffuse = diffuse * attn;
     i = i + 1;

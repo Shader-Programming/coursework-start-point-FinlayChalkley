@@ -3,8 +3,8 @@
 
 Cube::Cube(unsigned int diffuseMap, float shine, unsigned int specularMap) :
 	m_diffuseTexture(diffuseMap),
-	m_specularTexture(specularMap),
-	m_shine(shine)
+	m_shine(shine),
+	m_specularTexture(specularMap)
 {
 	makeVAO();
 	resetTransform();

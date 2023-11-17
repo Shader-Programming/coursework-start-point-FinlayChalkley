@@ -31,7 +31,6 @@ private:
 	glm::mat4 m_transform; // transform (model matrix)
 	// matirial properties
 	float m_shine;
-	//float m_specularStrength;
 	unsigned int m_diffuseTexture;
 	unsigned int m_specularTexture;
 

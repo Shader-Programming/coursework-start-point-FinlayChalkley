@@ -9,7 +9,7 @@
 class Plane {
 
 public:
-	Plane(glm::vec3 col, float shine, float specStrength);
+	Plane(unsigned int diffuseMap, float shine, unsigned int specularMap);
 	~Plane() {};
 	void setPlaneMaterialValues(Shader* shader);
 	void setTransform(Shader* shader) { shader->setMat4("Model", m_transform); }
@@ -27,7 +27,8 @@ private:
 	unsigned int m_VAO2;
 	glm::mat4 m_transform;
 	float m_shine;
-	float m_specularStrength;
+	unsigned int m_diffuseTexture;
+	unsigned int m_specularTexture;
 	glm::vec3 m_colour;
 
 	std::vector<float> vertexData = {

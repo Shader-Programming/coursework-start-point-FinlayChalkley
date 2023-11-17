@@ -9,8 +9,6 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 {
 	unsigned int cubeDiff = TextureManager::loadTexture("..\\Resources\\diffuseCube.jpg");
 	unsigned int cubeSpec = TextureManager::loadTexture("..\\Resources\\specularCube.jpg");
-	//TextureManager* m_texture = new TextureManager();
-	//unsigned int cubeDiff = m_texture->loadTexture("..\\Resources\\diffuseCube.jpg");
 	m_camera = new FirstPersonCamera();
 	m_camera->attachHandler(m_window, m_handler);
 	m_myShader = new Shader("..\\Shaders\\vertexShader.glsl", "..\\shaders\\fragShader.glsl");
@@ -20,7 +18,6 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	for (int i = 0; i < 50; i++) {
 		m_pointLight = new PointLight(rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-5.0, -5.0, - 5.0), glm::vec3(5.0,5.0,5.0)));
 		m_pointLight->setLightUniforms(m_myShader, i);
-		cout << i << endl;
 	}
 	
 
@@ -29,10 +26,10 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 
 	m_cube = new Cube(cubeDiff, 64, cubeSpec);
 	m_cube->setCubeMaterialValues(m_myShader);
-	/*
+	
 	m_walls = new Plane(glm::vec3(1.0, 1.0, 1.0), 64, 16);
 	m_walls->setPlaneMaterialValues(m_myShader);
-	*/
+	
 	
 
 
@@ -98,10 +95,10 @@ void MyScene::render()
 	m_cube->setTransform(m_myShader);
 	glDrawElements(GL_TRIANGLES, m_cube->getIndecesCount(), GL_UNSIGNED_INT, 0);
 	m_cube->resetTransform();
-	/*
+	
 	glBindVertexArray(m_walls->getVAO());
 	m_walls->setTransform(m_myShader);
 	glDrawElements(GL_TRIANGLES, m_walls->getIndicesCount(), GL_UNSIGNED_INT, 0);
-	*/
+	
 	
 }
