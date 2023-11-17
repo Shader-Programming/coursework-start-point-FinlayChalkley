@@ -19,6 +19,12 @@
     <Filter Include="Source Files\lights">
       <UniqueIdentifier>{423c2ba5-c196-456b-86f6-fe21b82c3fa9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\texture">
+      <UniqueIdentifier>{914e09df-274f-481a-ad3c-cb8788b858e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\textures">
+      <UniqueIdentifier>{925175d6-a182-4981-8d9d-23fb97f26217}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EntryPoint.cpp">
@@ -55,6 +61,12 @@
       <Filter>Source Files\lights</Filter>
     </ClCompile>
     <ClCompile Include="src\walls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textures\TextureManager.cpp">
+      <Filter>Source Files\textures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textures\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -103,6 +115,12 @@
     </ClInclude>
     <ClInclude Include="include\walls.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\textures\TextureManager.h">
+      <Filter>Header Files\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\textures\stb_image.h">
+      <Filter>Header Files\texture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

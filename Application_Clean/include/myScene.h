@@ -6,6 +6,7 @@
 #include "lights/SpotLight.h"
 #include "cube.h"
 #include "walls.h"
+#include "textures/TextureManager.h"
 #include <vector>
 using namespace std;
 
@@ -26,6 +27,7 @@ private:
 	SpotLight* m_spotLight;
 	Plane* m_walls;
 	PointLight* m_pointLight;
+	TextureManager* m_texture;
 	void render();
 };
 

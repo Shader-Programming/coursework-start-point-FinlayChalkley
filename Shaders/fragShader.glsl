@@ -2,7 +2,6 @@
 
 uniform vec3 viewPos;
 uniform vec3 cubeColour;
-uniform float shine;
 uniform float specStrength;
 //directional light uniforms
 uniform vec3 lightColour;
@@ -14,12 +13,18 @@ uniform vec3 slightColour;
 uniform vec3 sAttentuation;
 uniform vec3 sDirection;
 uniform vec2 sRadii;
+// material properties 
+uniform sampler2d diffuseMap;
+uniform sampler2d specularMap;
+uniform float shine;
+
 
 int i = 0;
 
 out vec4 FragColor;
 in vec3 normal;
 in vec3 posInWS;
+in vec2 texture;
 
 struct PointLight {
     vec3 colour;
@@ -35,6 +40,7 @@ uniform PointLight pointArray[numPL];
 
 vec3 n = normalize(normal);
 vec3 viewDir = normalize(viewPos - posInWS); // posInWS comes from vertex shader
+
 vec3 getDirectionalLight();
 vec3 getPointLight();
 vec3 getSpotLight();
@@ -45,17 +51,19 @@ void main(){
     //vec3 result = getSpotLight();
     //result = aces(result);
     FragColor = vec4(result, 1.0);
-
 }
 
 vec3 getDirectionalLight() {
+    vec3 objCol = texture(diffuseMap, uv).rgb;
+    float specStrength = texture(specularMap, uv).r;
+
     // ambient
-    vec3 ambient = cubeColour * lightColour * ambientFactor;
+    vec3 ambient = objCol * lightColour * ambientFactor;
 
     //diffuse
     float diffuseFactor = dot(n, -lightDirection);
-    diffuseFactor = max(diffuseFactor, 0.0f);
-    vec3 diffuse = cubeColour * lightColour * diffuseFactor;
+    diffuseFactor = max(diffuseFactor, 1.0f);
+    vec3 diffuse = objCol * lightColour * diffuseFactor;
 
     //blinn phong specular
     vec3 viewDir = normalize(viewPos - posInWS); // posInWS comes from vertex shader
@@ -70,7 +78,10 @@ vec3 getDirectionalLight() {
 }
 
 vec3 getPointLight() {
-    //attn
+    vec3 objCol = texture(diffuseMap, uv).rgb;
+    float specStrength = texture(specularMap, uv).r;
+
+
     float distance = length(pointArray[i].position - posInWS);
     float attn = 1.0 / (pointArray[i].constants.x + (pointArray[i].constants.y*distance) + (pointArray[i].constants.z*(distance*distance)));
 
@@ -79,7 +90,7 @@ vec3 getPointLight() {
     //diffuse
     float diffuseFactor = dot(n, -lightDir);
     diffuseFactor = max(diffuseFactor, 1.0f);
-    vec3 diffuse = cubeColour * pointArray[i].colour * diffuseFactor;
+    vec3 diffuse = objCol * pointArray[i].colour * diffuseFactor;
     
     //specular
     vec3 viewDir = normalize(viewPos - posInWS); // posInWS comes from vertex shader
@@ -98,6 +109,10 @@ vec3 getPointLight() {
 
 vec3 getSpotLight() {
 
+    vec3 objCol = texture(diffuseMap, uv).rgb;
+    float specStrength = texture(specularMap, uv).r;
+
+
     float theta = dot(-sDirection, normalize(sDirection));
     float denom = (sRadii.x - sRadii.y);
     float intensity = (theta - sRadii.y) / denom;
@@ -106,7 +121,7 @@ vec3 getSpotLight() {
     //diffuse
     float diffuseFactor = dot(n, -sDirection);
     diffuseFactor = max(diffuseFactor, 1.0f);
-    vec3 diffuse = cubeColour * slightColour * diffuseFactor;
+    vec3 diffuse = objCol * slightColour * diffuseFactor;
     //diffuse = diffuse * intensity;
 
     //specular

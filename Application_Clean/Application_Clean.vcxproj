@@ -145,6 +145,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\textures\stb_image.cpp" />
+    <ClCompile Include="src\textures\TextureManager.cpp" />
     <ClCompile Include="src\lights\PointLight.cpp" />
     <ClCompile Include="src\cube.cpp" />
     <ClCompile Include="src\lights\DirectionalLight.cpp" />
@@ -170,6 +172,8 @@
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\Shader.h" />
     <ClInclude Include="include\lights\SpotLight.h" />
+    <ClInclude Include="include\textures\TextureManager.h" />
+    <ClInclude Include="include\textures\stb_image.h" />
     <ClInclude Include="include\WindowManager.h" />
     <ClInclude Include="include\lights\light.h" />
     <ClInclude Include="include\lights\PointLight.h" />

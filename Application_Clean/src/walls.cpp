@@ -1,6 +1,9 @@
 #include "walls.h"
 
-Plane::Plane(glm::vec3 col, float shine, float specStrength) : m_colour(col), m_shine(shine), m_specularStrength(specStrength)
+Plane::Plane(glm::vec3 col, float shine, float specStrength) : 
+	m_colour(col), 
+	m_shine(shine), 
+	m_specularStrength(specStrength)
 {
 	makeVAO();
 	resetTransform();

@@ -7,6 +7,10 @@ using namespace std;
 
 MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) 
 {
+	unsigned int cubeDiff = TextureManager::loadTexture("..\\Resources\\diffuseCube.jpg");
+	unsigned int cubeSpec = TextureManager::loadTexture("..\\Resources\\specularCube.jpg");
+	//TextureManager* m_texture = new TextureManager();
+	//unsigned int cubeDiff = m_texture->loadTexture("..\\Resources\\diffuseCube.jpg");
 	m_camera = new FirstPersonCamera();
 	m_camera->attachHandler(m_window, m_handler);
 	m_myShader = new Shader("..\\Shaders\\vertexShader.glsl", "..\\shaders\\fragShader.glsl");
@@ -23,12 +27,15 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_spotLight = new SpotLight(glm::vec3(0.5, 1.0, 1.0), glm::vec3(0.0, 7.0, 0.0), glm::vec3(1.0, 0.027, 0.0028), glm::vec3(0.0, -1.0, 0.0), glm::vec2((glm::cos(glm::radians(12.5f))), glm::cos(glm::radians(17.5f))));
 	m_spotLight->setLightUniforms(m_myShader);
 
-	m_cube = new Cube(glm::vec3(0.1, 0.2, 0.3), 64, 16);
+	m_cube = new Cube(cubeDiff, 64, cubeSpec);
 	m_cube->setCubeMaterialValues(m_myShader);
 	/*
 	m_walls = new Plane(glm::vec3(1.0, 1.0, 1.0), 64, 16);
 	m_walls->setPlaneMaterialValues(m_myShader);
 	*/
+	
+
+
 }
 
 
