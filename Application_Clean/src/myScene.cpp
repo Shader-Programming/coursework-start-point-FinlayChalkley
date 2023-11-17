@@ -14,7 +14,7 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_directionalLight->setLightUniforms(m_myShader);
 	
 	for (int i = 0; i < 50; i++) {
-		m_pointLight = new PointLight(rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-5.0, -5.0, - 5.0), glm::vec3(5.0,5.0,5.0)));
+		m_pointLight = new PointLight(rand(glm::vec3(-1.0, -1.0, -1.0), glm::vec3(1.0,1.0,1.0)), rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-1.0, -1.0, -1.0), glm::vec3(1.0,1.0,1.0)));
 		m_pointLight->setLightUniforms(m_myShader, i);
 	}
 	

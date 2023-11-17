@@ -95,7 +95,7 @@ vec3 getPointLight() {
 
     //diffuse
     float diffuseFactor = dot(n, -lightDir);
-    diffuseFactor = max(diffuseFactor, 1.0f);
+    diffuseFactor = max(diffuseFactor, 0.0f);
     vec3 diffuse = objCol * pointArray[0].colour * diffuseFactor;
     
     //specular
@@ -105,8 +105,8 @@ vec3 getPointLight() {
     specLevel = max(specLevel, 0.0); //make sure value is > 0
     specLevel = pow(specLevel, shine); // exponent, float variable
     vec3 specular = pointArray[0].colour * specLevel * specStrength;
-    //specular = specular * attn;
-    //diffuse = diffuse * attn;
+    specular = specular * attn;
+    diffuse = diffuse * attn;
     
 
     return diffuse + specular;
