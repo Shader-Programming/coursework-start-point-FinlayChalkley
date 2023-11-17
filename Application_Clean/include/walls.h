@@ -9,7 +9,7 @@
 class Plane {
 
 public:
-	Plane(unsigned int diffuseMap, float shine, unsigned int specularMap);
+	Plane(unsigned int diffuseMap, float shine, unsigned int specularMap, unsigned int normalMap);
 	~Plane() {};
 	void setPlaneMaterialValues(Shader* shader);
 	void setTransform(Shader* shader) { shader->setMat4("Model", m_transform); }
@@ -29,13 +29,14 @@ private:
 	float m_shine;
 	unsigned int m_diffuseTexture;
 	unsigned int m_specularTexture;
+	unsigned int m_normalTexture;
 	glm::vec3 m_colour;
 
 	std::vector<float> vertexData = {
-		-floorSize, floorLevel,  -floorSize,     0.0, 1.0, 0.0,
-		floorSize, floorLevel,  -floorSize,     0.0, 1.0, 0.0,
-		floorSize, floorLevel,   floorSize,     0.0, 1.0, 0.0,
-		-floorSize, floorLevel,   floorSize,     0.0, 1.0, 0.0, };
+		-floorSize, floorLevel,  -floorSize,     0.0, 1.0, 0.0, 0.0,0.0,1.0f, 0.0f, 0.0f,
+		floorSize, floorLevel,  -floorSize,     0.0, 1.0, 0.0, 1.0,0.0,1.0f, 0.0f, 0.0f,
+		floorSize, floorLevel,   floorSize,     0.0, 1.0, 0.0, 1.0,1.0,1.0f, 0.0f, 0.0f,
+		-floorSize, floorLevel,   floorSize,     0.0, 1.0, 0.0, 0.0,1.0,1.0f, 0.0f, 0.0f };
 	std::vector<unsigned int> floorIndices = {
 		3,2,1,
 		3,1,0

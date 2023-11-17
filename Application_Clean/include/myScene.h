@@ -18,6 +18,14 @@ public:
 	~MyScene() {};
 	void update(float dt) override;
 	glm::vec3 rand(glm::vec3 lower, glm::vec3 upper);
+	//cube textures
+	unsigned int cubeDiff = TextureManager::loadTexture("..\\Resources\\diffuseCube.jpg");
+	unsigned int cubeSpec = TextureManager::loadTexture("..\\Resources\\specularCube.jpg");
+	unsigned int cubenorm = TextureManager::loadTexture("..\\Resources\\normalCube.jpg");
+	//floor textures
+	unsigned int floorDiff = TextureManager::loadTexture("..\\Resources\\diffuseFloor.jpg");
+	unsigned int floorSpec = TextureManager::loadTexture("..\\Resources\\specularFloor.jpg");
+	unsigned int floornorm = TextureManager::loadTexture("..\\Resources\\normalFloor.jpg");
 
 private:
 		

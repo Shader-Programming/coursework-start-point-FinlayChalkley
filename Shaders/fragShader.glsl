@@ -16,6 +16,7 @@ uniform vec2 sRadii;
 // material properties 
 uniform sampler2D diffuseMap;
 uniform sampler2D specularMap;
+uniform sampler2D normalMap;
 uniform float shine;
 
 
@@ -25,6 +26,7 @@ out vec4 FragColor;
 in vec3 normal;
 in vec3 posInWS;
 in vec2 uv;
+in mat3 TBN;
 
 struct PointLight {
     vec3 colour;
@@ -46,11 +48,15 @@ vec3 getPointLight();
 vec3 getSpotLight();
 
 void main(){
-    vec3 result = getDirectionalLight();
-    //vec3 result = getPointLight();
+    n = texture(normalMap, uv).rgb;
+    n = n*2.0 - 1.0;
+    n = normalize(TBN*n);
+    //vec3 result = getDirectionalLight();
+    vec3 result = getPointLight();
     //vec3 result = getSpotLight();
     //result = aces(result);
     FragColor = vec4(result, 1.0);
+    //FragColor = texture(normalMap, uv);
 }
 
 vec3 getDirectionalLight() {
@@ -101,7 +107,6 @@ vec3 getPointLight() {
     vec3 specular = pointArray[0].colour * specLevel * specStrength;
     //specular = specular * attn;
     //diffuse = diffuse * attn;
-    i = i + 1;
     
 
     return diffuse + specular;

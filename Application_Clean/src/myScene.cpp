@@ -7,8 +7,6 @@ using namespace std;
 
 MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H) 
 {
-	unsigned int cubeDiff = TextureManager::loadTexture("..\\Resources\\diffuseCube.jpg");
-	unsigned int cubeSpec = TextureManager::loadTexture("..\\Resources\\specularCube.jpg");
 	m_camera = new FirstPersonCamera();
 	m_camera->attachHandler(m_window, m_handler);
 	m_myShader = new Shader("..\\Shaders\\vertexShader.glsl", "..\\shaders\\fragShader.glsl");
@@ -24,11 +22,12 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_spotLight = new SpotLight(glm::vec3(0.5, 1.0, 1.0), glm::vec3(0.0, 7.0, 0.0), glm::vec3(1.0, 0.027, 0.0028), glm::vec3(0.0, -1.0, 0.0), glm::vec2((glm::cos(glm::radians(12.5f))), glm::cos(glm::radians(17.5f))));
 	m_spotLight->setLightUniforms(m_myShader);
 
-	m_cube = new Cube(cubeDiff, 64, cubeSpec);
+	m_cube = new Cube(cubeDiff, 64, cubeSpec, cubenorm);
 	m_cube->setCubeMaterialValues(m_myShader);
 	
-	m_walls = new Plane(glm::vec3(1.0, 1.0, 1.0), 64, 16);
+	m_walls = new Plane(floorDiff, 64, floorSpec, floornorm);
 	m_walls->setPlaneMaterialValues(m_myShader);
+	
 	
 	
 
@@ -65,6 +64,34 @@ void MyScene::render()
 	m_myShader->setMat4("Projection", m_camera->getProjectionMatrix());
 	m_myShader->setVec3("viewPos", m_camera->getPosition());
 
+	
+	glBindVertexArray(m_walls->getVAO());
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, floorDiff);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, floorSpec);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, floornorm);
+	m_walls->setTransform(m_myShader);
+	glDrawElements(GL_TRIANGLES, m_walls->getIndicesCount(), GL_UNSIGNED_INT, 0);
+	
+	
+	glBindVertexArray(m_cube->getVAO());
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D,cubeDiff);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, cubeSpec);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, cubenorm);
+	m_cube->setTransform(m_myShader);
+	glDrawElements(GL_TRIANGLES, m_cube->getIndecesCount(), GL_UNSIGNED_INT, 0);
+	//second cube
+	m_cube->translate(glm::vec3(5.0, 0.0, 0.0));
+	m_cube->rotate((float)(glfwGetTime() * 0.5), glm::vec3(1.0, 0.0, 0.0));
+	m_cube->setTransform(m_myShader);
+	glDrawElements(GL_TRIANGLES, m_cube->getIndecesCount(), GL_UNSIGNED_INT, 0);
+	m_cube->resetTransform();
+	
 	// moving the cube
 	/*
 	if (m_handler->keyHasBeenPressed()) {
@@ -85,20 +112,6 @@ void MyScene::render()
 		}
 	}
 	*/
-	
-	glBindVertexArray(m_cube->getVAO());
-	m_cube->setTransform(m_myShader);
-	glDrawElements(GL_TRIANGLES, m_cube->getIndecesCount(), GL_UNSIGNED_INT, 0);
-	//second cube
-	m_cube->translate(glm::vec3(5.0, 0.0, 0.0));
-	m_cube->rotate((float)(glfwGetTime() * 0.5), glm::vec3(1.0, 0.0, 0.0));
-	m_cube->setTransform(m_myShader);
-	glDrawElements(GL_TRIANGLES, m_cube->getIndecesCount(), GL_UNSIGNED_INT, 0);
-	m_cube->resetTransform();
-	
-	glBindVertexArray(m_walls->getVAO());
-	m_walls->setTransform(m_myShader);
-	glDrawElements(GL_TRIANGLES, m_walls->getIndicesCount(), GL_UNSIGNED_INT, 0);
 	
 	
 }
