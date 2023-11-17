@@ -20,8 +20,6 @@ uniform sampler2D normalMap;
 uniform float shine;
 
 
-int i = 0;
-
 out vec4 FragColor;
 in vec3 normal;
 in vec3 posInWS;
@@ -46,17 +44,17 @@ vec3 viewDir = normalize(viewPos - posInWS); // posInWS comes from vertex shader
 vec3 getDirectionalLight();
 vec3 getPointLight();
 vec3 getSpotLight();
+vec3 aces(vec3 x);
 
 void main(){
     n = texture(normalMap, uv).rgb;
     n = n*2.0 - 1.0;
     n = normalize(TBN*n);
-    //vec3 result = getDirectionalLight();
-    vec3 result = getPointLight();
-    //vec3 result = getSpotLight();
-    //result = aces(result);
+    vec3 result = getDirectionalLight();
+    result += getPointLight();
+    //vec3 result = getSpotLight(); // doesn't work
+    result = aces(result);
     FragColor = vec4(result, 1.0);
-    //FragColor = texture(normalMap, uv);
 }
 
 vec3 getDirectionalLight() {
@@ -87,29 +85,41 @@ vec3 getPointLight() {
     vec3 objCol = texture(diffuseMap, uv).rgb;
     float specStrength = texture(specularMap, uv).r;
 
+    vec3 totalDiffuse = vec3(0.0);
+    vec3 totalSpecular = vec3(0.0);
 
-    float distance = length(pointArray[0].position - posInWS);
-    float attn = 1.0 / (pointArray[0].constants.x + (pointArray[0].constants.y*distance) + (pointArray[0].constants.z*(distance*distance)));
+    for (int i = 0; i < numPL; i++) {
+        float distance = length(pointArray[i].position - posInWS);
+        float attn = 1.0 / (pointArray[i].constants.x + (pointArray[i].constants.y*distance) + (pointArray[i].constants.z*(distance*distance)));
 
-    vec3 lightDir = normalize((pointArray[0].position - posInWS));
+        vec3 lightDir = normalize((pointArray[i].position - posInWS));
 
-    //diffuse
-    float diffuseFactor = dot(n, -lightDir);
-    diffuseFactor = max(diffuseFactor, 0.0f);
-    vec3 diffuse = objCol * pointArray[0].colour * diffuseFactor;
+        //diffuse
+        float diffuseFactor = dot(n, -lightDir);
+        diffuseFactor = max(diffuseFactor, 0.0f);
+        vec3 diffuse = objCol * pointArray[i].colour * diffuseFactor;
     
-    //specular
-    vec3 viewDir = normalize(viewPos - posInWS); // posInWS comes from vertex shader
-    vec3 H = normalize(-pointArray[0].position + viewDir);
-    float specLevel = dot(n, H);
-    specLevel = max(specLevel, 0.0); //make sure value is > 0
-    specLevel = pow(specLevel, shine); // exponent, float variable
-    vec3 specular = pointArray[0].colour * specLevel * specStrength;
-    specular = specular * attn;
-    diffuse = diffuse * attn;
+        //specular
+        vec3 viewDir = normalize(viewPos - posInWS); // posInWS comes from vertex shader
+        vec3 H = normalize(-pointArray[i].position + viewDir);
+        float specLevel = dot(n, H);
+        specLevel = max(specLevel, 0.0); //make sure value is > 0
+        specLevel = pow(specLevel, shine); // exponent, float variable
+        vec3 specular = pointArray[i].colour * specLevel * specStrength;
+        specular = specular * attn;
+        diffuse = diffuse * attn;
+        
+        //totalDiffuse += diffuse;
+        //totalSpecular += specular;
+
+        return diffuse + specular;
+        // multiple point lights work when the attn value is not used. but when it is used the screen appears black with no picture.
+    }
+    
+    //return totalDiffuse + totalSpecular;
+    
     
 
-    return diffuse + specular;
 }
 
 vec3 getSpotLight() {
@@ -117,7 +127,7 @@ vec3 getSpotLight() {
     vec3 objCol = texture(diffuseMap, uv).rgb;
     float specStrength = texture(specularMap, uv).r;
 
-
+    
     float theta = dot(-sDirection, normalize(sDirection));
     float denom = (sRadii.x - sRadii.y);
     float intensity = (theta - sRadii.y) / denom;
@@ -139,8 +149,9 @@ vec3 getSpotLight() {
     specular = specular * intensity;
 
     return diffuse + specular;
+    
 }
-/*
+
 vec3 aces(vec3 x) {
     const float a = 2.51;
     const float b = 0.03;
@@ -150,4 +161,4 @@ vec3 aces(vec3 x) {
     return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
 
 }
-*/
+

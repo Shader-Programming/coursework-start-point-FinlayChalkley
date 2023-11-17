@@ -14,7 +14,7 @@ MyScene::MyScene(GLFWwindow* window, InputHandler* H) : Scene(window, H)
 	m_directionalLight->setLightUniforms(m_myShader);
 	
 	for (int i = 0; i < 50; i++) {
-		m_pointLight = new PointLight(rand(glm::vec3(-1.0, -1.0, -1.0), glm::vec3(1.0,1.0,1.0)), rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-1.0, -1.0, -1.0), glm::vec3(1.0,1.0,1.0)));
+		m_pointLight = new PointLight(rand(glm::vec3(-2.0, -2.0, -2.0), glm::vec3(2.0,2.0,2.0)), rand(glm::vec3(-5.0, -5.0, -5.0), glm::vec3(5.0,5.0,5.0)), rand(glm::vec3(-1.0, -1.0, -1.0), glm::vec3(1.0,1.0,1.0)));
 		m_pointLight->setLightUniforms(m_myShader, i);
 	}
 	
@@ -92,26 +92,7 @@ void MyScene::render()
 	glDrawElements(GL_TRIANGLES, m_cube->getIndecesCount(), GL_UNSIGNED_INT, 0);
 	m_cube->resetTransform();
 	
-	// moving the cube
-	/*
-	if (m_handler->keyHasBeenPressed()) {
-		if (m_handler->isKeyPressed(GLFW_KEY_W)) {
-			m_model = glm::translate(m_model, glm::vec3(0.0, 2.0, 0.0));
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_S)) {
-			m_model = glm::translate(m_model, glm::vec3(0.0, -2.0, 0.0));
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_A)) {
-			m_model = glm::translate(m_model, glm::vec3(-2.0, 0.0, 0.0));
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_D)) {
-			m_model = glm::translate(m_model, glm::vec3(2.0, 0.0, 0.0));
-		}
-		if (m_handler->isKeyPressed(GLFW_KEY_X)) {
-			m_model = glm::rotate(m_model, (float)(glfwGetTime() * 0.5), glm::vec3(1.0, 0.0, 0.0));
-		}
-	}
-	*/
+	
 	
 	
 }
